@@ -109,6 +109,7 @@ module ActiveRecord
 
       # Returns an array of +Column+ objects for the table specified by +table_name+.
       def columns(table_name)
+        puts "COLUMNS: #{caller.join(' ')}"
         table_name = table_name.to_s
         column_definitions(table_name).map do |field|
           new_column_from_field(table_name, field)
