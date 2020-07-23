@@ -426,7 +426,7 @@ module ActiveRecord
       #    end
       #  end
       def reset_column_information
-        puts "COLUMN - reset_column_information #{caller.join(" ")}"
+        puts "COLUMN - #{table_name} - reset_column_information #{caller.join(" ")}"
         connection.clear_cache!
         ([self] + descendants).each(&:undefine_attribute_methods)
         connection.schema_cache.clear_data_source_cache!(table_name)
@@ -454,12 +454,14 @@ module ActiveRecord
 
       def load_schema
         return if schema_loaded?
+        puts "GES: load_schema for #{table_name}"
         @load_schema_monitor.synchronize do
           return if defined?(@columns_hash) && @columns_hash
 
           load_schema!
 
           @schema_loaded = true
+          puts "GES: load_schema done for #{table_name}"
         end
       end
 
@@ -476,7 +478,7 @@ module ActiveRecord
       end
 
       def reload_schema_from_cache
-        puts "COLUMN: reload_schema_from_cache #{caller.join(' ')}"
+        puts "GES: COLUMN: reload_schema_from_cache #{caller.join(' ')}"
 
         @arel_table = nil
         @column_names = nil
