@@ -454,14 +454,14 @@ module ActiveRecord
 
       def load_schema
         return if schema_loaded?
-        puts "GES: load_schema for #{table_name}"
+        puts "GES: load_schema for #{table_name} #{@slug} #{caller.join(' ')}"
         @load_schema_monitor.synchronize do
           return if defined?(@columns_hash) && @columns_hash
 
           load_schema!
 
           @schema_loaded = true
-          puts "GES: load_schema done for #{table_name}"
+          puts "GES: load_schema done for #{table_name} #{@slug} #{caller.join(' ')}"
         end
       end
 
@@ -478,8 +478,6 @@ module ActiveRecord
       end
 
       def reload_schema_from_cache
-        puts "GES: COLUMN: reload_schema_from_cache #{caller.join(' ')}"
-
         @arel_table = nil
         @column_names = nil
         @attribute_types = nil
@@ -493,9 +491,12 @@ module ActiveRecord
         @schema_loaded = false
         @attribute_names = nil
         @yaml_encoder = nil
+        @slug = SecureRandom.hex(16)
         direct_descendants.each do |descendant|
           descendant.send(:reload_schema_from_cache)
         end
+
+        puts "GES: COLUMN: reload_schema_from_cache for #{table_name} #{@slug} #{caller.join(' ')}"
       end
 
       # Guesses the table name, but does not decorate it with prefix and suffix information.
