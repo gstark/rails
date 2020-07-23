@@ -426,7 +426,7 @@ module ActiveRecord
       #    end
       #  end
       def reset_column_information
-        puts "COLUMN - #{table_name} - reset_column_information #{caller.join(" ")}"
+        puts "COLUMN - #{class_name} - reset_column_information #{caller.join(" ")}"
         connection.clear_cache!
         ([self] + descendants).each(&:undefine_attribute_methods)
         connection.schema_cache.clear_data_source_cache!(table_name)
@@ -454,14 +454,14 @@ module ActiveRecord
 
       def load_schema
         return if schema_loaded?
-        puts "GES: load_schema for #{table_name} #{@slug} #{caller.join(' ')}"
+        puts "GES: load_schema for #{class_name} #{@slug} #{caller.join(' ')}"
         @load_schema_monitor.synchronize do
           return if defined?(@columns_hash) && @columns_hash
 
           load_schema!
 
           @schema_loaded = true
-          puts "GES: load_schema done for #{table_name} #{@slug} #{caller.join(' ')}"
+          puts "GES: load_schema done for #{class_name} #{@slug} #{caller.join(' ')}"
         end
       end
 
@@ -496,7 +496,7 @@ module ActiveRecord
           descendant.send(:reload_schema_from_cache)
         end
 
-        puts "GES: COLUMN: reload_schema_from_cache for #{table_name} #{@slug} #{caller.join(' ')}"
+        puts "GES: COLUMN: reload_schema_from_cache for #{class_name} #{@slug} #{caller.join(' ')}"
       end
 
       # Guesses the table name, but does not decorate it with prefix and suffix information.
