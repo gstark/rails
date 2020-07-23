@@ -454,10 +454,11 @@ module ActiveRecord
 
       def load_schema
         return if schema_loaded?
-        puts "GES: load_schema for #{name} #{@slug} #{caller.join(' ')}"
+        puts "GES: need to load_schema for #{name} #{@slug}"
         @load_schema_monitor.synchronize do
           return if defined?(@columns_hash) && @columns_hash
 
+          puts "GES: load_schema for #{name} #{@slug} #{caller.join(' ')}"
           load_schema!
 
           @schema_loaded = true
