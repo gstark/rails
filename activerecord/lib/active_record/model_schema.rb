@@ -476,6 +476,8 @@ module ActiveRecord
       end
 
       def reload_schema_from_cache
+        puts "COLUMN: reload_schema_from_cache #{caller.join(' ')}"
+
         @arel_table = nil
         @column_names = nil
         @attribute_types = nil
